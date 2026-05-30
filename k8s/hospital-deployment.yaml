@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hospital-app-development
+  labels:
+    app: hospital-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hospital-backend
+  template:
+    metadata:
+      labels:
+        app: hospital-backend
+    spec:
+      containers:
+        - name: hospital-app
+          image: mshaan/hospital-app:v1.0.0
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 5000
+          envFrom:
+          - configMapRef:
+              name: hospital-app-config
+          - secretRef:
+              name: hospital-app-secrets
+

@@ -1,0 +1,22 @@
+app:
+  replicaCount: 2
+  image:
+    repository: mshaan/hospital-app
+    tag: v1.0.0
+    pullPolicy: Always
+  service:
+    type: LoadBalancer
+    port: 80
+    targetPort: 5000
+database:
+  enabled: true
+  storageSize: 10Gi
+  image: mongo:6.0
+  
+env:
+  nodeEnv: "production"
+  mongoUri: "mongodb://mongodb:27017/hospital_management"
+  sessionSecret: "h0sp1tal_s3ss10n_s3cr3t_key_2026"
+  jwtSecret: "h0sp1tal_jwt_auth_s3cr3t_key_2026"
+  adminUsername: "admin"
+  adminPassword: "admin123"

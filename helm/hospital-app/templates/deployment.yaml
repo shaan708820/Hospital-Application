@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-backend
+spec:
+  replicas: {{ .Values.app.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-backend  
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-backend
+    spec:
+      containers:
+        - name: hospital-app
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.app.service.targetPort }}
+          env:
+          - name: NODE_ENV
+            value: {{ .Values.env.nodeEnv | quote }}
+          - name: MONGO_URI
+            value: {{ .Values.env.mongoUri | quote }}
+          - name: SESSION_SECRET
+            value: {{ .Values.env.sessionSecret | quote }}
+          - name: JWT_SECRET
+            value: {{ .Values.env.jwtSecret | quote }}
+          - name: ADMIN_USERNAME
+            value: {{ .Values.env.adminUsername | quote }}
+          - name: ADMIN_PASSWORD
+            value: {{ .Values.env.adminPassword | quote }}
